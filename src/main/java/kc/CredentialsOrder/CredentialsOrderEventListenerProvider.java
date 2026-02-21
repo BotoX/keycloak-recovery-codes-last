@@ -42,7 +42,11 @@ public class CredentialsOrderEventListenerProvider implements EventListenerProvi
                 .getCredentials()
                 .filter(credential -> "recovery-authn-codes".equals(credential.getType()))
                 .findFirst()
-                .orElseThrow();
+                .orElse(null);
+
+        if (recoveryCodesCredential == null) {
+            return;
+        }
 
         String moveID = null;
         for (CredentialModel credential : user.credentialManager().getCredentials().toList()) {
